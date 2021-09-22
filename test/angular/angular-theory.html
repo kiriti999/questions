@@ -1,0 +1,334 @@
+< !DOCTYPE html>
+
+    <body>
+        <pre>
+            view engine in angular 2
+            How to remove # value from url
+            Zonejs
+            Form builder
+            Why export is used before component
+            Lazzy loading in Angular 2
+            What are directives in Angular 2
+            Examples of structural directives
+
+
+            Annotations vs decorators
+            Child to parent component communication
+            Parent to child communication
+            Authentication in Angular 2
+
+            angular 2 page life cycle
+            when to use ngAferViewInti
+            constructor vs ngOnInIt
+            How to use async pipe
+
+            Diff between directive and component
+            When to use directive
+            What is import, export, provider, declaration, entryComponent in module
+            How Angular bootstraping works
+            Tell typical architecture of the Angular app
+            What are decorators
+            What is attribute directive
+            What are the three types of directives in Angular
+
+            Authentication and authorization in angular
+            What is Auth guard
+
+            what is viewChild and viewContentChild
+            How do we pass data between two different components which are in separate modules?
+            Types of compiler in angular
+            What is AOT and what it does and its advantages over JIT?
+            What is async and await in angular? What are its benefits?
+
+            How change detection occur in angular 5/6?
+            What is on push in angular?
+            What is dependency injection and why not just create an instance using new() constructor instead of using dependency injection?
+            Difference between observables and promises?
+
+
+Company Name: Gain Sight
+========================
+
+<!-- #region What is component resolver in angular ? -->
+What is component resolver in angular ?
+// component resolver will enable a generated factory to be attached to component so that
+we can call "create instance" to create component.
+<!-- #endregion -->
+
+
+<!-- #region What are chunks in routing?  -->
+What are chunks in routing?
+// We have two types of chunks:
+1. component-code-splitting
+2. route-code-splitting
+
+1. In component-level code splitting, you move components to their own JavaScript chunks and load them lazily when
+they are needed with the use of "ngx-loadable-component"
+
+2. To use route-level code splitting in Angular, set the loadChildren property of the route declaration and
+combine it with a dynamic import:
+
+{
+                path: 'nyan',
+loadChildren: () => import('./nyan/nyan.module').then(m => m.NyanModule)
+}
+<!-- #endregion -->
+
+
+
+<!-- #region How do you create an exportable module in angular that can used by third party company? -->
+Create a component and use it inside @Ngmodule and register it with @angular/elements API.
+
+Example:
+=======
+@NgModule({
+                imports: [BrowserModule],
+declarations: [HelloComponent],
+entryComponents: [HelloComponent]
+})
+export class HelloModule {
+                ngDoBootstrap() {}
+}
+
+Register as custom element:
+==========================
+registerAsCustomElements([HelloComponent], () =>
+platformBrowserDynamic().bootstrapModule(HelloModule)
+);
+
+NgElement class used to register all the components as custom elements extends HTMLElement class like a
+vanilla js custom element should do.
+
+And then build it using: `Webpack & Angular Compiler Plugin from @ngtools/webpack.`
+and then use it in html page using: script src="dist/main.bundle.js"
+<!-- #endregion -->
+
+
+
+What is AOT compiling and What does it compile?
+// complies templates in js files ahead of prod build with factory files.
+
+What is reactive programming? //Rxjs (Observable - data flow asynchronously using events so not many threads are created)
+
+How do you update multiple widgets from single source of data after making single api url call?
+
+What is zone js?
+//Zone js is execution context in js which has method zone.run() to track async events.
+
+<!-- #region What is ngZone in angular? -->
+// zonejs checks for change detection in angular using zone.run(){this.tick()} method
+// Zone.run() method can capture changes for asynchronous events in angular like input, onchange, submit and then
+angular will run through list of changeDetectionRef.
+<!-- #endregion -->
+
+
+<!-- #region What is changeDetectionRef ref? -->
+What is changeDetectionRef ref?
+When ever we use changeDetectionStrategy to on push, we need to use markForChange() method to detect the changes.
+<!-- #endregion -->
+
+
+<!-- #region What is viewEncapsulation?  -->
+What is viewEncapsulation?
+Component styles overtake precedence by default.
+
+ViewEncapsulation.Emulated is set by default in angular.
+This allows that styles from main HTML propagate to the component
+but styles defined in this component's @Component decorator are scoped to this component only.
+
+ViewEncapsulation.None: styles from the component propagate back to the main HTML
+
+ViewEncapsulation.ShadowDom: styles from main HTML do not propagate to the component.
+<!-- #endregion -->
+
+
+<!-- #region what is angular tree shaking? -->
+Tree shaking is a step in a build process that removes unused code from a code base. Removing unused code can be thought
+as “tree shaking,” or you can visualize the physical shaking of a tree and the remaining dead leaves falling off of the
+tree. By using tree shaking, we can make sure our application only includes the code that is needed for our application
+to run.
+
+Example:
+
+import {Injectable} from '@angular/core';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SharedService {
+    constructor() {}
+}
+
+In the @Injectable decorator we have a new property called providedIn. With this property we can tell Angular which
+module to register our service to instead of having to import the module and register it to the providers of a NgModule.
+By default, this syntax registers it to the root injector which will make our service an application wide singleton.
+
+Where as `@Injectable()` will bundle the service even though not used.
+<!-- #endregion -->
+
+what is light house in angular? 
+// light house tool is provided by google to run audit like performance test in browser
+
+<!-- #region How to run code outside zonejs? and then detect changes. -->
+this.ngZone.runOutsideAngular(() => {
+this.interval = window.setInterval(() => {
+// execute code outside angular
+// example: drag and drop, scroll events, setTimeout etc
+}, 10)
+});
+
+to detect changes again, we need run it inside zone.run()
+<!-- #endregion -->
+
+<!-- #region Difference between Renderer and ElementRef? -->
+The Renderer is a class that is a partial abstraction over the DOM.
+ElementRef has a direct reference to DOM like ElementRef.nativeElement which can lead to security issues - XSS attacks
+<!-- #endregion -->
+
+<!-- #region @Input() and @Output() properties/decorators in angular/ parent and child communication? -->
+https://stackblitz.com/edit/angular9-input-output
+
+An @Input() property is writable while an @Output() property is observable.
+    Consider this:
+    <parent-component>
+        <child-component></child-component>
+    </parent-component>
+
+    Input Example:
+        From parent: <child-component[receivedParentMessage]="messageToSendP"></child-component>
+        export class ItemDetailComponent {
+            @Input() receivedParentMessage: string; // decorate the property with @Input()
+        }
+    
+    Output Example:
+        <button (click)="sendMessageToParent(messageToSendC)">Send to Parent</button>
+        Inside childComponent.ts:
+            @Output() decorator binds a property of a component to send data from child to calling component (parent).
+            messageToEmit = new EventEmitter<string>();
+            sendMessageToParent(message: string) {
+                this.messageToEmit.emit(message)
+            }
+    Inside parentComponent.ts:
+    <app-child (messageToEmit)="getMessage($event)"></app-child>
+            receivedChildMessage: string;
+            getMessage(message: string) {
+                this.receivedChildMessage = message;
+            }
+<!-- #endregion -->
+
+<!-- #region Types of directives in angular? -->
+Types of directives in angular?
+1. Component directives - Components are directive in angular 
+    eg: <app-name></app-name>
+
+2. Structural directives - Removes or add dom based on condition.
+Examples of Structural directive:
+    1. *NgFor and *NgIf
+
+3. attribute directive - change the appearance or behavior of an element, component or other directive.
+Examples of attribute directives:
+    1. NgClass—adds and removes a set of CSS classes.
+    1a.TOGGLE: <!-- toggle the "special" class on/off with a property -->
+    <div [ngClass]="isSpecial ? 'special' : ''">This div is special</div>
+    2. NgStyle—adds and removes a set of HTML styles.
+    3. NgModel—adds two-way data binding to an HTML form element.
+    4. NgSwitch
+    5. NgStyle
+    6. Custom attribute directive: https://stackblitz.com/angular/dmvokxvannn?file=src%2Fapp%2Fhighlight.directive.ts
+<!-- #endregion -->
+
+
+<!-- #region Template reference variables (#var) -->
+<input #phone placeholder="phone number" />
+You can refer to a template reference variable anywhere in the component's template. 
+Here, a <button> further down the template refers to the phone variable.
+    <input #phone placeholder="phone number" />
+    <!-- phone refers to the input element; pass its `value` to an event handler -->
+    <button (click)="callPhone(phone.value)">Call</button>
+<!-- #endregion -->
+
+
+<!-- #region Types of binding in angular? -->
+1. String interpolation {{}} 
+Example: 
+    1. 2*2 inside interpolation is called template expression
+    2. {{item?.name}} interpolation with null check
+    3. The $any() type cast function: {{$any(item).bestByDate}}
+    3a. Sometimes a binding expression triggers a type error during AOT compilation and it is not possible or difficult to fully
+    specify the type. To silence the error, you can use the $any() cast function to cast the expression to the any type
+
+2. property binding <div><img [src]="image"></div> where `image` is component property/variable
+    eg: <div [hidden]="!itemForm.form.valid">
+            <p>{{ submitMessage }}</p>
+        </div>
+3. Event binding <button (click)="goBack()">Go back</button> lets you listen for certain events
+    Example: Two way binding: <input [(ngModel)]="course.name" placeholder="name" />
+<!-- #endregion -->
+
+
+<!-- #region Things to consider when designing angular app? -->
+Angular architecture:
+
+1. Create app structure considering the features
+Example: 1. Customer features can have its own components, services etc
+2. Reusable features/services can go into SharedService
+Example: Pipes
+3. Consider lazy loading modules
+4. May be global error handling using errorHandler from core or http interceptor error handler. 
+Check angular-error-handling file here: <file src="./angular-error-handling.html"></file>
+<!-- #endregion -->
+
+Type-ahead suggestions in angular: https://angular.io/guide/practical-observable-usage#type-ahead-suggestions
+
+Observables vs promises: https://angular.io/guide/comparing-observables#cheat-sheet
+
+Angular libraries: Reusable functions to be used across multiple apps or modules
+https://angular.io/guide/libraries
+
+Angular custom elements: 
+========================
+    Angular elements are Angular components packaged as custom elements (also called Web Components), 
+    a web standard for defining new HTML elements in a framework-agnostic way.
+
+    Custom elements are a Web Platform feature currently supported by Chrome, Edge (Chromium-based), Firefox, Opera, and Safari,
+    and available in other browsers through polyfills
+
+    A custom element extends HTML by allowing you to define a tag whose content is created and controlled by JavaScript code. 
+
+    The @angular/elements package exports a createCustomElement() API that provides a bridge from Angular's component interface and 
+    change detection functionality to the built-in DOM API.
+
+    https://angular.io/guide/elements#how-it-works
+    https://angular.io/guide/elements#typings-for-custom-elements
+
+    Example:
+    // This uses the new custom-element method to add the popup to the DOM.
+    showAsElement(message: string) {
+        // Create element
+        const popupEl: NgElement & WithProperties<PopupComponent> = document.createElement('popup-element') as any;
+
+        // Listen to the close event
+        popupEl.addEventListener('closed', () => document.body.removeChild(popupEl));
+
+        // Set the message
+        popupEl.message = message;
+
+        // Add to the DOM
+        document.body.appendChild(popupEl);
+    }
+
+    Schematics: 
+    Schematics that are included in the @schematics/angular collection are run by default by the commands ng generate and ng add
+
+    Deployment: https://angular.io/guide/deployment#automatic-deployment-with-the-cli
+        eg: ng deploy
+
+    Optimizations:
+
+    https://angular.io/guide/deployment#production-optimizations
+    node_modules/.bin/source-map-explorer dist/main.*.bundle.js = Run the explorer to generate a graphical representation of one of the bundles
+
+</pre>
+    </body>
+
+    </html>

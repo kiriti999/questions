@@ -1,0 +1,108 @@
+html,
+body {
+    margin: 0 auto;
+    height: 100%;
+}
+.tm-container {
+    border: 5px solid #0a8cc6;
+    max-width: 420px;
+}
+
+.tm-header {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    border-bottom: 2px solid #d9d9d9;
+    height: 42px;
+}
+
+div.tm-col-change div.tm-col-data:last-child {
+    color: #7b7b7b;
+}
+
+.tm-col-1 {
+    background-color: #f7f7f7;
+    display: grid;
+    grid-template-rows: 90% 10%;
+    padding-left: 5px;
+}
+
+.tm-col-2 {
+    display: grid;
+    grid-template-rows: auto auto;
+    background-color: #efefef;
+    border-left: 2px solid #fff;
+    padding-right: 5px;
+    text-align: end;
+}
+
+.tm-col-account {
+    align-self: end;
+}
+
+.tm-col-caret {
+    padding-right: 5px;
+    align-self: end;
+    color: #116dac;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.tm-col-cash {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: end;
+}
+
+.tm-data {
+    display: grid;
+}
+
+.tm-rows {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 98% 2%;
+    height: 62px;
+    align-items: center;
+}
+
+.tm-row-account {
+    color: #0d6b9f;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+div.tm-rows:first-child div.tm-row-percentage {
+    color: red;
+}
+
+div.tm-rows:last-child {
+    height: 60px;
+    grid-template-columns: auto;
+}
+
+.tm-row-line {
+    width: 98.7%;
+    border-bottom: 2px solid #f2f2f2;
+    display: grid;
+    grid-template-columns: auto;
+    justify-self: end;
+}
+
+.tm-row-account,
+.tm-row-cash {
+    padding: 0 5px;
+}
+
+.tm-row-cash {
+    text-align: right;
+}
+
+.tm-row-percentage {
+    color: green;
+}
+
+.footer {
+    color: #4281a3;
+    justify-self: center;
+    font-size: 20px;
+}

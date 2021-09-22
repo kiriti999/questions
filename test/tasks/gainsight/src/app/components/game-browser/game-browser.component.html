@@ -1,0 +1,33 @@
+<div class="g-container">
+    <div class="g-title">
+        <div>Games Arena</div>
+    </div>
+</div>
+
+<div class="g-wrapper">
+    <section class="g-search">
+        <input type="text" class="g-search-input" placeholder="Search" [(ngModel)]="searchText">
+    </section>
+
+    <section class="g-box-wrapper">
+        <div class="box" *ngFor="let game of gameData | gameFilter: searchText | slice:1; let i = index">
+            <div class="g-type-top">
+                <div class="g-type-title">
+                    <div class="g-genre">{{game.title}}</div>
+                    <div class="g-choice" *ngIf="game.editors_choice === 'Y'">{{game.editors_choice}}</div>
+                </div>
+                <div class="g-platform">{{game.platform}}</div>
+            </div>
+            <div class="g-type-bottom">
+                <div class="g-genre">{{game.genre}}</div>
+                <div class="g-rating">{{game.score}}</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="g-footer">
+        <div class="g-pagination">
+
+        </div>
+    </section>
+</div>

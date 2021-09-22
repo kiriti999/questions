@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<body>
+  <pre>
+<!-- #region Hoisting: What is output of below code: -->
+  What is hoisting ?
+    var a = b = 20;
+    function check() {
+      console.log(a)
+      console.log(b)
+    }
+    check();
+    Answer: prints 20  for 'a' and 'b' becomes global on window
+<!-- #endregion -->
+
+<!-- #region Closures? What are some practical use cases of closures -->
+What are closures? What are some practical use cases of closures?
+
+Any nested function is a closure. Nested function has access to scope of outer function scope and its variables
+even after inner function has finished executing.
+
+Use cases:
+//=========
+1. closures are used to create private scope(encapsulation)
+2. closures are mostly used in case of callbacks, event handlers, es6 modules, setTimeouts, IIFE etc.
+Closure Scope Chain:
+Every closure has three scopes:
+
+Local Scope (Own scope)
+Outer Functions Scope
+Global Scope
+
+A common mistake is not realizing that, in the case where the outer function is itself a nested function, access to the
+outer function's scope includes the enclosing scope of the outer function—effectively creating a chain of function scopes.
+
+To demonstrate, consider the following example code:
+// global scope
+var e = 10;
+function sum(a){
+  return function(b){
+    return function(c){
+      // outer functions scope
+      return function(d){
+        // local scope
+        return a + b + c + d + e;
+      }
+    }
+  }
+}
+
+console.log(sum(1)(2)(3)(4)); // log 20
+
+<!-- #endregion -->
+
+<!-- #region What is difference between objects and primitives? -->
+
+if primitives has no properties, how can we access "abc".length
+
+var me =  new String("kiriti");
+Can we modify properties of primitive using a object wrapper?
+me.length = 2;
+console.log(me.length) //? what will be the output? answer 6
+
+<!-- #endregion -->
+
+<!-- #region What is difference between functional programming and oops? Give an example code for both. -->
+
+Object-Oriented programming works upon the idea of inheritance.
+The common problem with the OOP approach is the idea of shared state between different methods which can lead
+to the issue of race conditions.
+
+Functional programming (often abbreviated FP) is the process of building software by composing pure functions,
+avoiding shared state, mutable data, and side-effects.In JavaScript, functions are first-class because they can
+have properties and methods just like any other object
+
+OOPS:
+//===
+Example 1:
+//=======
+function Person() {
+  this.name = name;
+  this.greeting = function(){
+    alert("Hi I am + this.name);
+  }
+}
+Example 2:
+//=======
+// imperative style
+const doubleMap = numbers => {
+  const doubled = [];
+  for (let i = 0; i < numbers.length; i++) {
+    doubled.push(numbers[i] * 2);
+  }
+  return doubled;
+};
+console.log(doubleMap([2, 3, 4])); // [4, 6, 8]
+// Imperative code frequently utilizes statements. A statement is a piece of code which performs some action.
+Examples of commonly used statements include for, if, switch, throw, etc…
+
+
+Functional Programing:
+//===================
+Example 1:
+
+function createPerson() {
+  const obj = {};
+  obj.name = name;
+  obj.greeting = function(){
+    alert("Hi I am + this.name);
+  }
+  return obj;
+}
+let newPerson = createPerson('John');
+
+Example 2:
+//=======
+// declarative style
+const doubleMap = numbers => numbers.map(n => n * 2);
+// Declarative code relies more on expressions.
+
+// Prototypal inheritance (also: prototypes, OLOO). Ex: Object.create()
+// Functional programming (also: closures, first class functions, lambdas). Ex: new keyword
+
+<!-- #endregion -->
+
+<!-- #region What are the advantages of arrow functions -->
+let obj = {
+  myVar: 'foo',
+
+  myFunc: () => {
+    console.log(this.myVar)
+  }
+}
+obj.myFunc() // answer undefined because arrow function's "this" refers to global Object and not "obj"
+
+var numberss = {
+  numberA: 5,
+  numberB: 10,
+
+  sum: function() {
+    console.log('1', this);
+  }
+};
+
+numberss.sum(); //{numberA: 5, numberB: 10, sum: ƒ}
+<!-- #endregion -->
+
+<!-- #region  Insert number 3 in middle of array [1,2,4,5,6] ?-->
+  Answer:
+    array.splice(2,0,3)
+<!-- #endregion -->
+
+<!-- #region Questions -->
+    Difference between promises and async await and observables?
+    what is the use of var self  = this;
+    What is throttle and debounce with example use case scenario?
+    Prototype in js
+    global namespace pollution
+    Bubbling
+<!-- #endregion -->
+
+<!-- #region Difference between object.create and object.assign() -->
+    var target1 = {}, target2 = {};
+    var obj1 = Object.create(target1, {myProp: {value: 1}});
+    var obj2 = Object.assign(target2, {myProp: 1});
+    Prototypical chain
+
+    Object.create creates a new object with the specified [[Prototype]], and Object.assign assigns the properties directly on the specified object:
+
+    obj1 !== target1;
+    obj2 === target2;
+    The prototypical chains of obj1 and obj2 look like
+
+    obj1 --> target1 -->  Object.prototype --> null
+    obj2 -------------->  Object.prototype --> null
+    Object.create defines properties and Object.assign only assigns them.
+<!-- #endregion -->
+
+<!-- #region Difference between classical and prototypical inheritance? Can you give a code example?
+   How do you inherit from other objects?
+ -->
+
+  Classical:
+  =========
+
+    class Human {
+        // ...
+    }
+
+    class Man extends Human {
+        // ...
+    }
+
+    Man johnDoe = new Man();
+
+  Prototypical:
+  ============
+
+    var human = {};
+    var man = Object.create(human);
+    var johnDoe = Object.create(man);
+<!-- #endregion -->
+
+<!-- #region Questions -->
+    Write an example for function for call apply and bind?
+    Implement custom pop and push methods of array?
+    Different ways to converting object to primitives?
+    What are solid principles?
+    What is cyclomatic metrics?
+    What is single responsibility principle?
+    Name creational, structural and behavior design pattern with example?
+    inheritance vs composition? Which is better? Why? See video: https://www.youtube.com/watch?v=wfMtDGfHWpA
+<!-- #endregion -->
+
+<!-- #region  Implement in-place array reverse: -->
+
+  Example 1:
+    var a = [1,2,3];
+    var middle = Math.floor(a.length / 2);
+    for(let i = 0; i < middle; i++){
+      var temp = a[i];
+      a[i] = a[a.length-1-i];
+      a[a.length-1-i] = temp;
+    }
+
+  Example 2:
+      var reverseArrayInPlace = function (array) {
+      var arrLength = array.length;
+      for (i = 0; i < arrLength; i++) {
+          array.splice(i, 0, array.pop());
+      }
+    }
+
+  Example 3: Using array destructuring:
+   for (let i = 0; i < array.length / 2; i++) {
+      [array[i], array[array.length - 1 - i]] = [array[array.length - 1 - i], array[i]]
+  }
+<!-- #endregion -->
+
+<!-- #region What is best data structure for cart items -->
+What is best data structure for cart items
+<!-- #endregion -->
+
+'this' inside let block, arrow function and function expression
+
+how to delete cookie and set expiry time
+
+convert es6 class to es6 ? Ref: https://www.loggly.com/blog/node-js-error-handling/
+
+JS Sort internals: Sort is by default string sort i.e. based on ascii. Number is converted to string before sorting
+const numbers = [10, 5, 11];
+numbers.sort(); // => [10, 11, 5]
+
+We need to use comparator:
+const mutatedArray = array.sort([comparator]);
+const numbers = [10, 5, 11];
+
+numbers.sort((a, b) => {
+  if (a < b) {
+    return -1;
+  }
+  if (a > b) {
+    return 1;
+  }
+  return 0;
+}); // => [5, 10, 11]
+
+</pre>
+</body>
+
+</html>
