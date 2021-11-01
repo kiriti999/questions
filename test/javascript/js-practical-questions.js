@@ -417,3 +417,84 @@ for (let i = 1; i <= 5; i++) {
 console.log('Fibonacci Series:');
 /* #endregion */
 
+/* #region  find the missing number */
+let a = [5, 7],
+    count = 10,
+    missing = []
+
+for (let i = 1; i <= count; i++) {
+    if (a.indexOf(i) === -1) {
+        missing.push(i)
+    }
+}
+console.log(missing)
+/* #endregion */
+
+
+/* #region  Two sum problem - sum of two numbers should be in array */
+// Answer: https://levelup.gitconnected.com/how-to-solve-two-sum-in-javascript-d1ebd9dfd3d3
+var twoSum = function (nums, target) {
+    numsIndexes = {};
+
+    for (let i = 0; i < nums.length; i += 1) {
+        let currentDifference = target - nums[i];
+
+        if (numsIndexes[currentDifference] !== undefined && numsIndexes[currentDifference] !== i) {
+            return [i, numsIndexes[currentDifference]];
+        } else {
+            numsIndexes[nums[i]] = i;
+        }
+    }
+};
+
+// Sum of all numbers in array
+// ===========================
+
+// our two sum function which will return
+// all pairs in the array that sum up to S
+function twoSum(arr, S) {
+
+    var sums = [];
+    var hashTable = {};
+
+    // check each element in array
+    for (var i = 0; i < arr.length; i++) {
+
+        // calculate S - current element
+        var sumMinusElement = S - arr[i];
+
+        // check if this number exists in hash table
+        // if so then we found a pair of numbers that sum to S
+        if (hashTable[sumMinusElement.toString()] !== undefined) {
+            sums.push([arr[i], sumMinusElement]);
+        }
+
+        // add the current number to the hash table
+        hashTable[arr[i].toString()] = arr[i];
+
+    }
+
+    // return all pairs of integers that sum to S
+    return sums;
+
+}
+
+twoSum([3, 5, 2, -4, 8, 11], 7);
+
+/* #endregion */
+
+/* #region  Design a parking lot system in javascript */
+// Answer: https://www.jsmount.com/question/write-a-javascript-program-to-design-parking-system/
+/* #endregion */
+
+https://leetcode.com/problemset/all/
+https://leetcode.com/problemset/all/
+https://leetcode.com/problemset/all/
+https://leetcode.com/problemset/all/
+https://leetcode.com/problemset/all/
+
+
+https://prepfully.com/
+https://prepfully.com/
+https://prepfully.com/
+https://prepfully.com/
