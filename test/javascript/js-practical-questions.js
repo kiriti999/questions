@@ -481,6 +481,21 @@ function twoSum(arr, S) {
 
 twoSum([3, 5, 2, -4, 8, 11], 7);
 
+// factorial of 5 in efficient way
+1.const factorial = n => !(n > 1) ? 1 : factorial(n - 1) * n;
+2. const factorial = n => n ? (n * factorial(n - 1)) : 1;
+3.
+var f = [];
+function fac(n) {
+    if (n == 0 || n == 1)
+        return 1;
+    if (f[n] > 0)
+        return f[n];
+    return f[n] = n * fac(n - 1);
+}
+
+const result = fac(5);
+
 /* #endregion */
 
 /* #region  Design a parking lot system in javascript */
