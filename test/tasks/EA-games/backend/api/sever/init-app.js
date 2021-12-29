@@ -3,8 +3,8 @@ const util = require('util');
 
 const PARAMS = {
     basePath: '/api',
-    supportedVersions: ['v1'],
-    currentVersion: 'v1'
+    supportedVersions: ['v1', 'v2'],
+    currentVersion: 'v2'
 };
 
 global.PARAMS = PARAMS;
