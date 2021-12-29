@@ -3,9 +3,7 @@ let findPermutations = (str) => {
 
     if (!str || typeof str !== "string") {
         return "Please enter a string"
-    } else if (str.length < 2) {
-        return str
-    }
+    } else if (str.length < 2) return str;
 
     let permutationsArray = []
 
