@@ -1,3 +1,11 @@
+What is nodejs?
+Answer:
+Node.js is an open-source, cross-platform, back-end JavaScript runtime environment that runs on the V8 engine and executes JavaScript code outside a web browser.
+As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.
+Advantages:
+Furthermore, users of Node.js are free from worries of dead-locking the process, since there are no locks.
+Almost no function in Node.js directly performs I/O, so the process never blocks except when the I/O is performed using synchronous methods of Node.js standard library.
+
 Clusters in node?
 Answer:
 The Node. js Cluster module enables the creation of child processes (workers) that run simultaneously and share the same server port. Each spawned child has its own event loop, memory, and V8 instance. The child processes use IPC (Inter-process communication) to communicate with the parent Node.
@@ -24,7 +32,41 @@ Clone apps into multiple environments and using a load balancer(eg: nginx) to ro
 
 How to handle IO blocking operations in node like file read and db read etc?
 Answer: Can be handled using `event-stream` module in nodejs with `createReadStream` and `pipe` the data.
+
 What is event loop in node?
+Event loop is an endless loop, which waits for events, executes them and then sleeps until it receives more tasks.
+The event loop executes tasks from the event queue only when the call stack is empty i.e. there is no ongoing task.
+The event loop allows us to use callbacks and promises.
+The event loop executes the tasks starting from the oldest first.
+
+Advantages:
+The event loop is what allows Node.js to perform non-blocking I/O operations — despite the fact that JavaScript is single-threaded — by offloading operations to the system kernel whenever possible.
+Since most modern kernels are multi-threaded, they can handle multiple operations executing in the background. When one of these operations completes, the kernel tells Node.js so that the appropriate callback may be added to the poll queue to eventually be executed.
+
+Phases of event loop:
+  ┌───────────────────────────┐
+┌─>│           timers          │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │     pending callbacks     │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+│  │       idle, prepare       │
+│  └─────────────┬─────────────┘      ┌───────────────┐
+│  ┌─────────────┴─────────────┐      │   incoming:   │
+│  │           poll            │<─────┤  connections, │
+│  └─────────────┬─────────────┘      │   data, etc.  │
+│  ┌─────────────┴─────────────┐      └───────────────┘
+│  │           check           │
+│  └─────────────┬─────────────┘
+│  ┌─────────────┴─────────────┐
+└──┤      close callbacks      │
+   └───────────────────────────┘
+   Each phase has a FIFO queue of callbacks to execute.
+   When the queue has been exhausted or the callback limit is reached, the event loop will move to the next phase, and so on.
+   Between each run of the event loop, Node.js checks if it is waiting for any asynchronous I/O or timers and shuts down cleanly if there are not any.
+
+
 JWT Refresh token in node?
 session handling in node?
 sso in node? https://codeburst.io/building-a-simple-single-sign-on-sso-server-and-solution-from-scratch-in-node-js-ea6ee5fdf340
@@ -179,6 +221,53 @@ setImmediate 4 // macrotask
 network IO // macrotask
 
 Callbacks deferred with process.nextTick() run before any other I/O event is fired, while with setImmediate(), the execution is queued behind any I/O event that is already in the queue.
+
+
+Difference between spawn and fork and exec and execFile:
+=======================================================
+Spawn:
+When spawn is called, it creates a streaming interface between the parent and child process. Streaming Interface — one-time buffering of data in a binary format. ChildProcess instance, which implements the EventEmitter API. This means we can register handlers for events on this child object directly.
+child_process.spawn(command[, args][, options])
+var workerProcess = child_process.spawn('node', ['support.js', i]);
+
+Fork:
+When fork is called, it creates a communication channel between the parent and child process Communication Channel — messaging
+child_process.fork(modulePath[, args][, options])
+ var worker_process = child_process.fork("support.js", [i]);
+
+Exec:
+exec() method: This method creates a shell first and then executes the command.
+Syntax: child_process.exec(command[, options][, callback]) Parameters: command: Accepts a string that specifies the command to run with space-separated arguments.
+
+ExecFile:
+child_process. execFile() : similar to child_process. exec() except that it spawns the command directly without first spawning a shell by default.
+child_process.execFile(file[, args][, options][, callback])
+const { execFile } = require('child_process');
+
+execFile(__dirname + '/processNodejsImage.sh', (error, stdout, stderr) => {
+  if (error) {
+    console.error(`error: ${error.message}`);
+    return;
+  }
+
+  if (stderr) {
+    console.error(`stderr: ${stderr}`);
+    return;
+  }
+
+  console.log(`stdout:\n${stdout}`);
+});
+
+
+Spawn is useful when you want to make a continuous data transfer in binary/encoding format — e.g. transferring a 1 Gigabyte video,
+image, or log file.
+Fork is useful when you want to send individual messages — e.g. JSON or XML data messages.
+
+Conclusion
+Spawn should be used for streaming large amounts of data like images from the spawned process to the parent process.
+
+Fork should be used for sending JSON or XML messages. For example, suppose ten forked processes are created from the parent process. Each process performs some operation. For each process, completing the operation will send a message back to the parent stating something like "Process #4 done" or "Process #8 done".
+
 <!-- #endregion -->
 
 
