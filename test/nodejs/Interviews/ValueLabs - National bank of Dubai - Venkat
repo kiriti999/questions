@@ -1,0 +1,46 @@
+How rollback of transaction happens?
+Can we do relational db type operations in mongo?
+What should we do if Lambda is blocked on particular operation in reading SQS?
+Log rotation in log4js?
+Timeout in http/max timeout in axios?
+
+What is REST API? and its standards? CHECK link: https://restfulapi.net/
+========================================================================
+REST is an acronym for REpresentational State Transfer and an architectural style for distributed hypermedia systems.
+In order for an API to be considered RESTful, it has to conform to these criteria:
+A client-server architecture made up of clients, servers, and resources, with requests managed through HTTP.
+Stateless client-server communication, meaning no client information is stored between get requests and each request is separate and unconnected.
+Cacheable data that streamlines client-server interactions.
+
+Understanding REST API Design
+=============================
+Client-Server:
+The client-server constraint works on the concept that the client and the server should be separate from each other and allowed to evolve individually
+
+Stateless:
+A REST API should not rely on data being stored on the server or sessions to determine what to do with a call, but rather solely rely on the data that is provided in that call itself.
+
+Cache:
+REST API should be designed to encourage the storage of cacheable data.
+Response from server should indicate that the data can be stored up to a certain time (expires-at)
+
+Uniform Interface:
+The key to the decoupling client from server is having a uniform interface that allows independent evolution of the application without having the application’s services, models, or actions tightly coupled to the API layer itself.
+This interface should provide an unchanging, standardized means of communicating between the client and the server, such as using HTTP with URI resources, CRUD (Create, Read, Update, Delete), and JSON.
+
+Layered System:
+As the name implies, a layered system is a system comprised of layers, with each layer having a specific functionality and responsibility. If we think of a Model View Controller framework, each layer has its own responsibilities, with the models comprising how the data should be formed, the controller focusing on the incoming actions and the view focusing on the output. Each layer is separate but also interacts with the other. In REST API design, the same principle holds true, with different layers of the architecture working together to build a hierarchy that helps create a more scalable and modular application.
+
+Code on Demand(optional)
+
+The following four constraints can achieve a uniform REST interface:
+==================================================================
+
+Identification of resources – The interface must uniquely identify each resource involved in the interaction between the client and the server.
+
+Manipulation of resources through representations – The resources should have uniform representations in the server response. API consumers
+should use these representations to modify the resources state in the server.
+
+Self-descriptive messages – Each resource representation should carry enough information to describe how to process the message. It should also provide information of the additional actions that the client can perform on the resource.
+
+Hypermedia as the engine of application state – The client should have only the initial URI of the application. The client application should dynamically drive all other resources and interactions with the use of hyperlinks.

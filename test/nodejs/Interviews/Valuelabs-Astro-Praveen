@@ -6,4 +6,21 @@ Error handling in Nodejs?
 Difference between map and filter in any language?
 Difference between slice and splice?
 Which CICD used?
+    What is polymorphism ?
+        The polymorphism is a core concept of an object - oriented paradigm that provides a way to perform a single action in different forms.
+ It provides an ability to call the same method on different JavaScript objects.
+class A {
+    display() {
+        document.writeln("A is invoked<br>");
+    }
+}
+class B extends A {
+    display() {
+        document.writeln("B is invoked");
+    }
+}
 
+var a = [new A(), new B()]
+a.forEach(function (msg) {
+    msg.display();
+});
