@@ -4,6 +4,27 @@ What should we do if Lambda is blocked on particular operation in reading SQS?
 Log rotation in log4js?
 Timeout in http/max timeout in axios?
 
+What are middlewares/modules you have in nodejs?
+app.user(cors)
+bodyParser
+gzip compression
+fs (file system)
+log4Js
+barrelJS (to automatically create a export of all the modules from folder(containing ts files) into index.js/main.js)
+dotEnv
+cross-env
+aws-sdk
+sam-cli
+nodemon
+tslint, elsint, webpack, husky
+express-app-generator
+JoiSchema library to schema validation
+mocha or jest(mocha not required when jest is used)
+Didn't use crypto
+httpServer internally used by expressjs
+jwt
+
+
 What is REST API? and its standards? CHECK link: https://restfulapi.net/
 ========================================================================
 REST is an acronym for REpresentational State Transfer and an architectural style for distributed hypermedia systems.
