@@ -106,7 +106,7 @@ function createPerson() {
   const obj = {};
   obj.name = name;
   obj.greeting = function(){
-    alert("Hi I am + this.name);
+    alert("Hi I am", this.name);
   }
   return obj;
 }
@@ -143,6 +143,8 @@ var numberss = {
 };
 
 numberss.sum(); //{numberA: 5, numberB: 10, sum: ƒ}
+
+Good Read on arrow functions here: https://medium.com/tfogo/advantages-and-pitfalls-of-arrow-functions-a16f0835799e
 <!-- #endregion -->
 
 <!-- #region  Insert number 3 in middle of array [1,2,4,5,6] ?-->

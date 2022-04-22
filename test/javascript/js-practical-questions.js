@@ -532,6 +532,20 @@ const result = fac(5);
 
 /* #endregion */
 
+<Fibanoci>
+const number = parseInt(prompt('Enter the number of terms: '));
+let n1 = 0, n2 = 1, nextTerm;
+
+console.log('Fibonacci Series:');
+
+for (let i = 1; i <= number; i++) {
+    console.log(n1);
+    nextTerm = n1 + n2;
+    n1 = n2;
+    n2 = nextTerm;
+}
+</Fibanoci>
+
 /* #region  Design a parking lot system in javascript */
 // Answer: https://www.jsmount.com/question/write-a-javascript-program-to-design-parking-system/
 /* #endregion */
