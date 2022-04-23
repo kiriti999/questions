@@ -1,15 +1,17 @@
 Can we use network load balancer to connect to API Gateway?
+    https ://docs.aws.amazon.com/apigateway/latest/developerguide/getting-started-with-private-integration.html
+
 What are array methods?
 What is the architecture in current project?
-What is common between forEach map and filter?
+What is common between forEach map and filter ? Callbacks
 
-Difference between
+Difference between following:
 
 await promise();
 await promise();
 await promise();
 
-and
+    and
 
 await promise.all([])
 
