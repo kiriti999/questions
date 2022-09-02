@@ -1,12 +1,31 @@
 Why do we need data structures?
+Data structure provides a way of organizing, managing, and storing data efficiently. With the help of data structure, the data items can be traversed easily. Data structure provides efficiency, reusability and abstraction.
+
 Why are call backs are needed?
+Because the javascript being executed is Asynchronous, therefore if you just put any old function after making the asynchronous request, it will likely be called before the original request completes. The original request will return as soon as it BEGINS (is sent out), not completes.
+
+If you need to do something with the result of the asynchronous request, or chain together requests, etc you will need a callback to ensure the next step doesn't begin before the previous step is finished.
+
 When to use promises vs callbacks?
+A callback is a function that is to be executed after another function has finished executing
+With callback we pass a callback into a function that would then get called upon completion. With promises, you attach callbacks on the returned promise object.
+
 What is difference between map data structures and json? Why to use only map over JavaScript object?
+
 Why unit tests are needed? I'm what scenario unit is passed but the development failed?
+
 Different between XML and JSON. Why json over XML?
+
 Disadvantages of micro services over monolithic architecture?
+
 When to use rdms vs no SQL? Real time examples?
+
 Why do we normalise the tables?
+
 What are closures?
-How to prevent ddos attacks in nodejs?
+
+How to prevent ddos attacks in nodejs? use Helmet
+
 Node security?
+
+What is object oriented programming and 5 pillars of it?
