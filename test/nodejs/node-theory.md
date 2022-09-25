@@ -1,7 +1,9 @@
+
 What is nodejs?
 Answer:
 Node.js is an open-source, cross-platform, back-end JavaScript runtime environment that runs on the V8 engine and executes JavaScript code outside a web browser.
 As an asynchronous event-driven JavaScript runtime, Node.js is designed to build scalable network applications.
+
 Advantages:
 Furthermore, users of Node.js are free from worries of dead-locking the process, since there are no locks.
 Almost no function in Node.js directly performs I/O, so the process never blocks except when the I/O is performed using synchronous methods of Node.js standard library.
@@ -26,60 +28,40 @@ Answer: node app.js arg1 arg2 arg3
   Since most modern kernels are multi-threaded, they can handle multiple operations executing in the background. When one of these operations completes, the kernel tells Node.js so that the appropriate callback may be added to the poll queue to eventually be executed.
 
   Phases of event loop:
-    ┌───────────────────────────┐
-  ┌─>│           timers          │
+     ┌───────────────────────────┐
+  ┌─>│           timers          │ such as setTimeout() and setInterval()
   │  └─────────────┬─────────────┘
   │  ┌─────────────┴─────────────┐
-  │  │     pending callbacks     │
+  │  │     pending callbacks     │ such as I/O callbacks
   │  └─────────────┬─────────────┘
   │  ┌─────────────┴─────────────┐
-  │  │       idle, prepare       │
+  │  │       idle, prepare       │ only used internally
   │  └─────────────┬─────────────┘      ┌───────────────┐
-  │  ┌─────────────┴─────────────┐      │   incoming:   │
-  │  │           poll            │<─────┤  connections, │
+  │  ┌─────────────┴─────────────┐      │   incoming:   │ such as retrieve new I/O events;
+  │  │           poll            │<─────┤  connections, │ execute I/O related callbacks
   │  └─────────────┬─────────────┘      │   data, etc.  │
   │  ┌─────────────┴─────────────┐      └───────────────┘
-  │  │           check           │
+  │  │           check           │ setImmediate() callbacks are invoked here
   │  └─────────────┬─────────────┘
   │  ┌─────────────┴─────────────┐
-  └──┤      close callbacks      │
-    └───────────────────────────┘
+  └──┤      close callbacks      │ e.g. socket.on('close', ...)
+     └───────────────────────────┘
+
     Each phase has a FIFO queue of callbacks to execute.
     When the queue has been exhausted or the callback limit is reached, the event loop will move to the next phase, and so on.
     Between each run of the event loop, Node.js checks if it is waiting for any asynchronous I/O or timers and shuts down cleanly if there are not any.
 
+![system schema](phases.png)
+![node phases](https://i.stack.imgur.com/or0UH.png)
+
+
 <!-- #region Node process.nextTick vs setTimeout vs setImmediate vs I/O operations:  -->
   **region Node process.nextTick vs setTimeout vs setImmediate vs I/O operations:**
-  describe('deferredExecution', () => {
-    it('deferredExecution', (done) => {
-      console.log('Start');
-      setTimeout(() => console.log('setTimeout 1'), 0);
-      setImmediate(() => console.log('setImmediate 1'));
-      process.nextTick(() => console.log('nextTick 1'));
-      setImmediate(() => console.log('setImmediate 2'));
-      process.nextTick(() => console.log('nextTick 2'));
-      http.get(options, () => console.log('network IO'));
-      fs.readdir(process.cwd(), () => console.log('file system IO 1'));
-      setImmediate(() => console.log('setImmediate 3'));
-      process.nextTick(() => console.log('nextTick 3'));
-      setImmediate(() => console.log('setImmediate 4'));
-      fs.readdir(process.cwd(), () => console.log('file system IO 2'));
-      console.log('End');
-      setTimeout(done, 1500);
-    });
-  });
-
-  As an illustration
-
+  As an illustration:
+  ==================
   import fs from 'fs';
   import http from 'http';
 
-  const options = {
-    host: 'www.stackoverflow.com',
-    port: 80,
-    path: '/index.html'
-  };
-
   describe('deferredExecution', () => {
     it('deferredExecution', (done) => {
       console.log('Start');
@@ -99,7 +81,7 @@ Answer: node app.js arg1 arg2 arg3
     });
   });
 
-  will give the following output
+  Will give the following output:
     Start // synchronous
     End // synchronous
     nextTick 1 // microtask
@@ -115,6 +97,49 @@ Answer: node app.js arg1 arg2 arg3
     network IO // macrotask
 
   Callbacks deferred with process.nextTick() run before any other I/O event is fired, while with setImmediate(), the execution is queued behind any I/O event that is already in the queue.
+
+  For example, if we run the following script which is not within an I/O cycle (i.e. the main module), the order in which the two timers are executed is non-deterministic, as it is bound by the performance of the process:
+
+      // timeout_vs_immediate.js
+      setTimeout(() => {
+        console.log('timeout');
+      }, 0);
+
+      setImmediate(() => {
+        console.log('immediate');
+      });
+      $ node timeout_vs_immediate.js
+      timeout
+      immediate
+
+      $ node timeout_vs_immediate.js
+      immediate
+      timeout
+      However, if you move the two calls within an I/O cycle, the immediate callback is always executed first:
+
+      // timeout_vs_immediate.js
+      const fs = require('fs');
+
+      fs.readFile(__filename, () => {
+        setTimeout(() => {
+          console.log('timeout');
+        }, 0);
+        setImmediate(() => {
+          console.log('immediate');
+        });
+      });
+      $ node timeout_vs_immediate.js
+      immediate
+      timeout
+
+      $ node timeout_vs_immediate.js
+      immediate
+      timeout
+
+    The main advantage to using setImmediate() over setTimeout() is setImmediate() will always be executed before any timers if scheduled within an I/O cycle, independently of how many timers are present.
+
+    MUST READ on event loop: https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
+    MUST READ on timers: https://nodejs.org/en/docs/guides/timers-in-node/
 <!-- #endregion EVENT LOOP -->
 
 
@@ -130,9 +155,7 @@ Answer: node app.js arg1 arg2 arg3
 
   https://www.tutorialspoint.com/nodejs/nodejs_streams.htm
 
-  Streams are objects that let you read data from a source or write data to a destination in continuous fashion. In
-
-
+  Streams are objects that let you read data from a source or write data to a destination in continuous fashion.
 
   Each type of Stream is an EventEmitter instance and throws several events at different instance of times. For example, some of the commonly used events are:
     data − This event is fired when there is data is available to read.
@@ -155,15 +178,15 @@ Answer: node app.js arg1 arg2 arg3
 
     // Handle stream events --> data, end, and error
     readerStream.on('data', function(chunk) {
-    data += chunk;
+      data += chunk;
     });
 
     readerStream.on('end',function() {
-    console.log(data);
+      console.log(data);
     });
 
     readerStream.on('error', function(err) {
-    console.log(err.stack);
+      console.log(err.stack);
     });
 
   <!-- WRITE -->
@@ -178,11 +201,11 @@ Answer: node app.js arg1 arg2 arg3
 
     // Handle stream events --> finish, and error
     writerStream.on('finish', function() {
-    console.log("Write completed.");
+      console.log("Write completed.");
     });
 
     writerStream.on('error', function(err) {
-    console.log(err.stack);
+      console.log(err.stack);
     });
 <!-- #endregion CODE FOR STREAMS-->
 
@@ -230,7 +253,7 @@ cloning: into multiple same apps and serve using load balancer like ngnix or aws
   Syntax: child_process.exec(command[, options][, callback]) Parameters: command: Accepts a string that specifies the command to run with space-separated arguments.
 
   ExecFile:
-  child_process. execFile() : similar to child_process. exec() except that it spawns the command directly without first spawning a shell by default.
+  child_process. execFile() : similar to child_process.exec() except that it spawns the command directly without first spawning a shell by default.
   child_process.execFile(file[, args][, options][, callback])
   const { execFile } = require('child_process');
 
@@ -279,7 +302,7 @@ Internet of Things
 Complex SPAs (Single-Page Applications)
 Real-time collaboration tools
 Streaming applications Example: NETFLIX
-Microservices architecture"
+Micro services architecture"
 blog page
 
 Why is Node.js preferred over other backend technologies like Java and PHP?
@@ -300,7 +323,7 @@ How to scale mongo? Is there any downtime while replica is being converted to pr
 How to ensure the reads and writes are consistent in mongodb?
 Difference between type and interface in typescript?
 Different types of middleware in express?
-How to send custom error 400 with custom message in expressjs?
+How to send custom error 400 with custom message in express.js?
 Design patterns used in node/javascript?
 Why choose nodejs over other frameworks?
 What is cap theorem and acid properties in relation to Database?
@@ -324,7 +347,7 @@ How to prevent hacker from sending thousands of request to your api?
 Why do need data structures?
 What happens if there are no callbacks?
 Difference b/w map and js object? why to use map data structure?
-Disadvantages of microservices over monolithic application?
+Disadvantages of micro services over monolithic application?
 How do we normalize tables?
 Get only 5 columns in mongo?
 Write SQL query to select where average emp salary is greater than 30?
