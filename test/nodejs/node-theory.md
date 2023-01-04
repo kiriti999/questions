@@ -59,26 +59,23 @@ Answer: node app.js arg1 arg2 arg3
   **region Node process.nextTick vs setTimeout vs setImmediate vs I/O operations:**
   As an illustration:
   ==================
-  import fs from 'fs';
-  import http from 'http';
 
-  describe('deferredExecution', () => {
-    it('deferredExecution', (done) => {
-      console.log('Start');
-      setTimeout(() => console.log('setTimeout 1'), 0);
-      setImmediate(() => console.log('setImmediate 1'));
-      process.nextTick(() => console.log('nextTick 1'));
-      setImmediate(() => console.log('setImmediate 2'));
-      process.nextTick(() => console.log('nextTick 2'));
-      http.get(options, () => console.log('network IO'));
-      fs.readdir(process.cwd(), () => console.log('file system IO 1'));
-      setImmediate(() => console.log('setImmediate 3'));
-      process.nextTick(() => console.log('nextTick 3'));
-      setImmediate(() => console.log('setImmediate 4'));
-      fs.readdir(process.cwd(), () => console.log('file system IO 2'));
-      console.log('End');
-      setTimeout(done, 1500);
-    });
+  const fs = require('fs');
+  const http = require('http');
+  it('deferredExecution', (done) => {
+    console.log('Start');
+    setTimeout(() => console.log('setTimeout 1'), 0);
+    setImmediate(() => console.log('setImmediate 1'));
+    process.nextTick(() => console.log('nextTick 1'));
+    setImmediate(() => console.log('setImmediate 2'));
+    process.nextTick(() => console.log('nextTick 2'));
+    http.get({}, () => console.log('network IO'));
+    fs.readdir(process.cwd(), () => console.log('file system IO 1'));
+    setImmediate(() => console.log('setImmediate 3'));
+    process.nextTick(() => console.log('nextTick 3'));
+    setImmediate(() => console.log('setImmediate 4'));
+    fs.readdir(process.cwd(), () => console.log('file system IO 2'));
+    console.log('End');
   });
 
   Will give the following output:
@@ -140,6 +137,41 @@ Answer: node app.js arg1 arg2 arg3
 
     MUST READ on event loop: https://nodejs.org/en/docs/guides/event-loop-timers-and-nexttick/
     MUST READ on timers: https://nodejs.org/en/docs/guides/timers-in-node/
+
+
+  const fs = require('fs');
+  const http = require('http');
+  fs.readFile(__filename, () => {
+    console.log('Start');
+    setTimeout(() => console.log('setTimeout 1'), 0);
+    setImmediate(() => console.log('setImmediate 1'));
+    process.nextTick(() => console.log('nextTick 1'));
+    setImmediate(() => console.log('setImmediate 2'));
+    process.nextTick(() => console.log('nextTick 2'));
+    http.get({}, () => console.log('network IO'));
+    fs.readdir(process.cwd(), () => console.log('file system IO 1'));
+    setImmediate(() => console.log('setImmediate 3'));
+    process.nextTick(() => console.log('nextTick 3'));
+    setImmediate(() => console.log('setImmediate 4'));
+    fs.readdir(process.cwd(), () => console.log('file system IO 2'));
+    console.log('End');
+});
+
+  Will give the following output:
+    Start // synchronous
+    End // synchronous
+    nextTick 1 // microtask
+    nextTick 2 // microtask
+    nextTick 3 // microtask
+    setImmediate 1 // macrotask
+    setImmediate 2 // macrotask
+    setImmediate 3 // macrotask
+    setImmediate 4 // macrotask
+    setTimeout 1 // macrotask
+    file system IO 1 // macrotask
+    file system IO 2 // macrotask
+    network IO // macrotask
+
 <!-- #endregion EVENT LOOP -->
 
 
