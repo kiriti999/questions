@@ -1,0 +1,33 @@
+<div class="submissions-2-col">
+
+    <div class="submissions-workflows">
+
+        <div class="workflow-card" *ngFor="let submission of submissions | slice:0:4">
+            <div class="workflow-card-header">
+                <div class="workflow-title">{{submission.task}}</div>
+                <button class="workflow-status">
+                    <span class="dot"></span>
+                    <span *ngIf='submission.status === "Incomplete"' class="work-flow-red work-status-value">{{submission.status}}</span>
+                    <span *ngIf='submission.status === "Complete"' class="work-flow-green work-status-value">{{submission.status}}</span>
+                    <span *ngIf='submission.status === "Needs Review"' class="work-flow-grey work-status-value">{{submission.status}}</span>
+                </button>
+            </div>
+            <div class="workflow-card-key-value">
+                <div class="workflow-card-key">From:</div>
+                <div class="workflow-card-value">{{submission.from}}</div>
+            </div>
+            <div class="workflow-card-key-value">
+                <div class="workflow-card-key">To:</div>
+                <div class="workflow-card-value">{{submission.to}}</div>
+            </div>
+            <div class="workflow-card-key-value">
+                <div class="workflow-card-key">Due Date:</div>
+                <div class="workflow-card-value">{{submission.dueDate | date:'dd MMMM' }}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <app-map></app-map>
+
+</div>

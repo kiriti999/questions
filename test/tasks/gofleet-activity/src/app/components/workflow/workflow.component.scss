@@ -1,0 +1,32 @@
+.workflow-status {
+    background: none;
+    border: 1px solid red;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-evenly;
+
+    .dot {
+        align-self: center;
+        background-color: red;
+        border-radius: 50%;
+        height: 10px;
+        margin-right: 5px;
+        width: 10px;
+    }
+
+    .work-flow-red{
+        color: red;
+    }
+    .work-flow-green{
+        color: green;
+    }
+    .work-flow-grey{
+        color: grey;
+    }
+}
+
+.workflow-status,
+.workflow-due-date {
+    color: red;
+    font-weight: bold;
+}

@@ -1,0 +1,61 @@
+<div class="parent">
+    <div class="container-1">
+
+        <app-header></app-header>
+
+        <section class="submissions">
+            <div class="submissions-title">Submissions</div>
+
+            <div class="options">
+
+                <div class="option-left">
+
+                    <div class="option-search">
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input type="text" placeholder="Search" pInputText>
+                        </span>
+                    </div>
+
+                    <div class="option-form">
+                        <p-dropdown [options]="statuses" placeholder="Select Form" [(ngModel)]="selectedStatus"
+                            optionLabel="name" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+
+                    <div class="option-status">
+                        <p-dropdown [options]="statuses" placeholder="Select status" [(ngModel)]="selectedStatus"
+                            optionLabel="name" [showClear]="true">
+                        </p-dropdown>
+                    </div>
+
+                    <div class="option-date">
+                        <input type="date" pInputText>
+                    </div>
+                </div>
+
+                <div class="option-right">
+                    <p-selectButton [options]="mapList" [(ngModel)]="selectedType" optionLabel="label"
+                        optionValue="value">
+                    </p-selectButton>
+
+                    <div class="option-export-button">
+                        <button pButton pRipple type="button" label="Export" icon="pi pi-cloud-download"
+                            class="p-button-text" style="height: 10px !important;" iconPos="left"></button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div [ngSwitch]="selectedType">
+                <li *ngSwitchCase="'map'">
+                    <app-list></app-list>
+                </li>
+                <li *ngSwitchCase="'list'">
+                    <app-workflow></app-workflow>
+                </li>
+            </div>
+
+        </section>
+    </div>
+</div>

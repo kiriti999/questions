@@ -1,0 +1,93 @@
+.submissions-2-col {
+    display: flex;
+    justify-content: flex-start;
+    margin: 15px 20px 0px 20px;
+
+    .submissions-workflows {
+        width: 25%;
+
+        .workflow-card {
+            border: 1px solid grey;
+            margin-bottom: 10px;
+            border-radius: 3px;
+            border-color: #9b9b9c;
+
+            .workflow-card-header {
+                display: grid;
+                grid-template-columns: auto auto;
+                margin: 10px;
+
+                .workflow-title {
+                    font-weight: bold;
+                    font-size: 17px;
+                }
+
+                .workflow-status {
+                    border: 1px solid red;
+                    border-radius: 3px;
+                    background: none;
+                    color: red;
+                    justify-self: end;
+                    margin-left: 10px;
+                    background-color: #FEEDEA;
+
+                    .dot {
+                        align-self: center;
+                        background-color: red;
+                        border-radius: 50%;
+                        height: 10px;
+                        margin-right: 5px;
+                        width: 10px;
+                    }
+
+                                        .work-flow-red {
+                                            color: red;
+                                        }
+                    
+                                        .work-flow-green {
+                                            color: green;
+                                        }
+                    
+                                        .work-flow-grey {
+                                            color: grey;
+                                        }
+                    .work-status-value {
+                        font-size: 13px;
+                        font-weight: bold;
+                    }
+                }
+            }
+
+            .workflow-card-key-value {
+                display: flex;
+                margin: 10px;
+
+                .workflow-card-key {
+                    color: #9b9b9c;
+                }
+
+                .workflow-card-value {
+                    font-size: 15px;
+                    font-weight: bold;
+                    align-self: center;
+                }
+            }
+
+            .workflow-card-value {
+                margin-left: 4px;
+            }
+        }
+    }
+}
+
+.workflow-card-key-value:nth-of-type(4) .workflow-card-value {
+    color: red;
+}
+
+
+.submissions-map,
+app-map {
+    height: 100%;
+    margin-left: 30px;
+    width: 75%;
+}
